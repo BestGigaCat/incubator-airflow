@@ -4367,7 +4367,7 @@ class DagStat(Base):
         :type session: Session
         """
         try:
-            qry = session.query(DagStat)
+            qry = session.query(DagStat).order_by(DagRun.dag_id, DagRun.state)
             if dag_ids:
                 qry = qry.filter(DagStat.dag_id.in_(set(dag_ids)))
             if dirty_only:
