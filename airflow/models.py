@@ -4367,13 +4367,13 @@ class DagStat(Base):
         :type session: Session
         """
         try:
-            qry = session.query(DagStat).order_by(DagRun.dag_id, DagRun.state)
+            qry = session.query(DagStat)
             if dag_ids:
                 qry = qry.filter(DagStat.dag_id.in_(set(dag_ids)))
             if dirty_only:
                 qry = qry.filter(DagStat.dirty == True)
 
-            qry = qry.with_for_update().all()
+            qry = qry.with_for_update().all().order_by(DagRun.dag_id, DagRun.state)
 
             ids = set([dag_stat.dag_id for dag_stat in qry])
 
